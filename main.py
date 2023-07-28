@@ -13,9 +13,7 @@ from langfuse.api.model import (
 
 app = FastAPI()
 
-OPENAI_API_KEY = os.getenv(
-    "OPENAI_API_KEY", "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"
-)
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-...")
 if not len(OPENAI_API_KEY):
     print("Please set OPENAI_API_KEY environment variable. Exiting.")
     sys.exit(1)
@@ -37,7 +35,7 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
     try:
         trace = await langfuse.trace(
             CreateTrace(
-                name="this-is-so-great-new",
+                name="lilly-this-is-so-great-new",
                 user_id="test",
                 metadata="test",
             )
@@ -60,12 +58,12 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
         )
 
         sub_sub_span = await sub_generation.span(
-            CreateSpan(name="sub-sub-span", metadata="test")
+            CreateSpan(name="sub-sub-sub-span", metadata="test")
         )
 
         sub_sub_span = await sub_sub_span.score(
             CreateScore(
-                name="user-explicit-feedback",
+                name="user-explicit-feedback-o",
                 value=1,
                 comment="I like how personalized the response is",
             )
