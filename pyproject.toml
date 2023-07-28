@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "fastapi-demo"
+version = "0.1.0"
+description = ""
+authors = ["Max Deichmann <m.deichmann@tum.de>"]
+readme = "README.md"
+packages = [{include = "fastapi_demo"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.100.0"
+uvicorn = "^0.23.1"
+openai = "^0.27.8"
+langfuse = "^0.0.61"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
