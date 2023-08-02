@@ -1,21 +1,16 @@
-from datetime import datetime
 from fastapi import FastAPI, Query, BackgroundTasks
 import openai
 import os
 import sys
 from langfuse import LangfuseAsync
-from langfuse.api.model import (
-    CreateGeneration,
-    CreateScore,
-    CreateSpan,
-    CreateTrace,
-)
+from langfuse.model import CreateGeneration, CreateScore, CreateTrace, CreateSpan
+import uvicorn
 
 app = FastAPI()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-...")
 if not len(OPENAI_API_KEY):
-    print("Please set OPENAI_API_KEY environment variable. Exiting.")
+    print("Please set OPENAI_API_KEY environment variable. Exiting. Again")
     sys.exit(1)
 
 openai.api_key = OPENAI_API_KEY
@@ -23,7 +18,7 @@ openai.api_key = OPENAI_API_KEY
 
 @app.get("/")
 async def main_route():
-    return {"message": "Hey, It is me Goku"}
+    return {"message": "Hey, It is me Goku from the future."}
 
 
 langfuse = LangfuseAsync(
@@ -35,7 +30,7 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
     try:
         trace = await langfuse.trace(
             CreateTrace(
-                name="lilly-this-is-so-great-new",
+                name="lilly-this-is-so-great-new-blub",
                 user_id="test",
                 metadata="test",
             )
@@ -76,12 +71,6 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
     return response
 
 
-async def flush(langfuse: LangfuseAsync):
-    print("flushing")
-    await langfuse.flush()
-    print("flushed")
-
-
 @app.get(
     "/campaign/",
     tags=["APIs"],
@@ -90,3 +79,8 @@ async def campaign(
     background_tasks: BackgroundTasks, prompt: str = Query(..., max_length=20)
 ):
     return await get_response_openai(prompt, background_tasks)
+
+
+def start():
+    """Launched with `poetry run start` at root level"""
+    uvicorn.run("fastapi_demo.main:app", host="0.0.0.0", port=8000, reload=True)
