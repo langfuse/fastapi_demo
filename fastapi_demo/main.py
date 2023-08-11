@@ -10,11 +10,11 @@ import uvicorn
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Load the ML model
+    # Operation on startup
 
-    yield
+    yield  # wait until shutdown
+
     # Flush all events to be sent to Langfuse on shutdown. This operation is blocking.
-
     langfuse.flush()
 
 
