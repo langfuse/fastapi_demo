@@ -58,7 +58,6 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
         sub_sub_span = sub_generation.span(
             CreateSpan(name="sub-sub-sub-span", metadata="test")
         )
-        print(1)
 
         sub_sub_span = sub_sub_span.score(
             CreateScore(
