@@ -638,13 +638,13 @@ text-helpers = ["chardet (>=5.1.0,<6.0.0)"]
 
 [[package]]
 name = "langfuse"
-version = "0.0.76a0"
+version = "1.0.0"
 description = "A client library for accessing langfuse"
 optional = false
 python-versions = ">=3.8.1,<4.0"
 files = [
-    {file = "langfuse-0.0.76a0-py3-none-any.whl", hash = "sha256:5e908c1e4287f2cde86379997e0f9b00a6166c5b47646506581cc0cdeb21a44b"},
-    {file = "langfuse-0.0.76a0.tar.gz", hash = "sha256:2fd2755de7327fa033ddf29c19cfea5e3be24192310f6d94d94b0def76390d3b"},
+    {file = "langfuse-1.0.0-py3-none-any.whl", hash = "sha256:28e432c2f618d32a4aca315650fa3b964ef6ff9cf8d1922d6b50989498333a96"},
+    {file = "langfuse-1.0.0.tar.gz", hash = "sha256:63dd9d3bcdef5a338f615e240ee8c1e3716f134ab9fd8358e47a7ac98af8541d"},
 ]
 
 [package.dependencies]
@@ -1417,4 +1417,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4efc9e71e23052ccf7b73baf9d313e6d53b6fd24cbcea26c480b62523d1897bc"
+content-hash = "c7a75f9ff965434bc9e7f77222c8f79448335f4adf1eafdfbc0c9e40e5e7504e"

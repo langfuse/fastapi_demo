@@ -11,7 +11,7 @@ python = "^3.11"
 fastapi = "^0.100.0"
 uvicorn = "^0.23.1"
 openai = "^0.27.8"
-langfuse = "0.0.76a0"
+langfuse = "^1.0.0"
 
 [tool.poetry.scripts]
 start = "fastapi_demo.main:start"
