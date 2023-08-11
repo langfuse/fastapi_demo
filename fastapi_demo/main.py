@@ -1,19 +1,24 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Query, BackgroundTasks
 import openai
 import os
 import sys
-from langfuse import LangfuseAsync
+from langfuse import Langfuse
 from langfuse.model import CreateGeneration, CreateScore, CreateTrace, CreateSpan
 import uvicorn
 
-app = FastAPI()
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "sk-...")
-if not len(OPENAI_API_KEY):
-    print("Please set OPENAI_API_KEY environment variable. Exiting. Again")
-    sys.exit(1)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Load the ML model
 
-openai.api_key = OPENAI_API_KEY
+    yield
+    # Flush all events to be sent to Langfuse on shutdown. This operation is blocking.
+
+    langfuse.flush()
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/")
@@ -21,14 +26,12 @@ async def main_route():
     return {"message": "Hey, It is me Goku from the future."}
 
 
-langfuse = LangfuseAsync(
-    "pk-lf-1234567890", "sk-lf-1234567890", "http://localhost:3000"
-)
+langfuse = Langfuse("pk-lf-1234567890", "sk-lf-1234567890", "http://localhost:3000")
 
 
 async def get_response_openai(prompt, background_tasks: BackgroundTasks):
     try:
-        trace = await langfuse.trace(
+        trace = langfuse.trace(
             CreateTrace(
                 name="lilly-this-is-so-great-new-blub",
                 user_id="test",
@@ -36,7 +39,7 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
             )
         )
 
-        trace = await trace.score(
+        trace = trace.score(
             CreateScore(
                 name="user-explicit-feedback",
                 value=1,
@@ -44,19 +47,20 @@ async def get_response_openai(prompt, background_tasks: BackgroundTasks):
             )
         )
 
-        generation = await trace.generation(
+        generation = trace.generation(
             CreateGeneration(name="his-is-so-great-new", metadata="test")
         )
 
-        sub_generation = await generation.generation(
+        sub_generation = generation.generation(
             CreateGeneration(name="yet another child", metadata="test")
         )
 
-        sub_sub_span = await sub_generation.span(
+        sub_sub_span = sub_generation.span(
             CreateSpan(name="sub-sub-sub-span", metadata="test")
         )
+        print(1)
 
-        sub_sub_span = await sub_sub_span.score(
+        sub_sub_span = sub_sub_span.score(
             CreateScore(
                 name="user-explicit-feedback-o",
                 value=1,
