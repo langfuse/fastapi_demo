@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     yield  # wait until shutdown
 
     # Flush all events to be sent to Langfuse on shutdown. This operation is blocking.
-    langfuse.shutdown()
+    langfuse.flush()
 
 
 app = FastAPI(lifespan=lifespan)
